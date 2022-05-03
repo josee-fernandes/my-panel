@@ -16,6 +16,7 @@ export const App = () => {
   const [month, setMonth] = React.useState(-1)
   const [bills, setBills] = React.useState<IBill[]>([])
   const [total, setTotal] = React.useState(0)
+  const [toPay, setToPay] = React.useState(0)
 
   const [balance, setBalance] = React.useState(0)
   const [updatingBalance, setUpdatingBalance] = React.useState(false)
@@ -130,6 +131,15 @@ export const App = () => {
               : accumulator,
         0)
       )
+
+      setToPay(
+        bills.reduce(
+          (accumulator, bill) =>
+            bill.month === month && !bill.paid
+              ? accumulator + bill.value
+              : accumulator,
+        0)
+      )
     }
   }, [bills, month])
 
@@ -200,7 +210,10 @@ export const App = () => {
           </select>
         </div>
         <div>
-          <p>Total: ({total.toLocaleString('pt-BR')} R$)</p>
+          <p>Total: {total.toLocaleString('pt-BR')} R$</p>
+        </div>
+        <div>
+          <p>Falta pagar: {toPay.toLocaleString('pt-BR')} R$</p>
         </div>
         {bills?.length > 0 && (
           <ul>
